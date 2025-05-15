@@ -82,7 +82,13 @@
 
 @layer components {
   .glass-card {
-    @apply backdrop-blur-md bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10;
+    @apply backdrop-blur-xl bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/5 shadow-lg;
+  }
+  
+  .glass-morph {
+    @apply relative isolate overflow-hidden;
+    @apply before:absolute before:inset-0 before:z-[-1] before:bg-gradient-to-br before:from-primary/10 before:to-accent/5 before:opacity-70;
+    @apply after:absolute after:inset-0 after:z-[-2] after:bg-gradient-to-tr after:from-primary/5 after:via-transparent after:to-accent/5 after:opacity-50;
   }
   
   .wave-bg {
@@ -92,8 +98,76 @@
   .wave-bg::before {
     @apply content-[''] absolute w-[200%] h-[200%] top-[-50%] left-[-50%] bg-gradient-to-br from-primary/5 to-accent/5 animate-wave;
   }
+
+  .gradient-text {
+    @apply bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent;
+  }
+
+  .gradient-text-primary {
+    @apply bg-gradient-to-br from-primary to-primary/70 bg-clip-text text-transparent;
+  }
+
+  .gradient-border {
+    @apply relative isolate;
+    @apply after:absolute after:inset-0 after:p-[1px] after:rounded-[inherit] after:bg-gradient-to-r after:from-primary/30 after:via-accent/20 after:to-primary/30 after:-z-10;
+  }
+  
+  .depth-shadow {
+    box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 30px -10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes wave {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 html[dir="rtl"] .rtl-flip {
   transform: scaleX(-1);
+}
+
+/* 3D Button effect */
+.btn-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-3d:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-3d:active {
+  transform: translateY(0px);
+}
+
+/* Custom scrollbar for better immersion */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.5);
 }

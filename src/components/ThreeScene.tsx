@@ -31,19 +31,21 @@ export function ThreeScene() {
       rotation: number;
       rotationSpeed: number;
       alpha: number;
+      depth: number;
     }[] = [];
     
-    // Generate random particles
-    for (let i = 0; i < 15; i++) {
+    // Generate random particles with depth
+    for (let i = 0; i < 25; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: 15 + Math.random() * 25,
-        speed: 0.5 + Math.random() * 1,
+        size: 15 + Math.random() * 30,
+        speed: 0.5 + Math.random() * 1.5,
         iconType: iconTypes[Math.floor(Math.random() * iconTypes.length)],
         rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.02,
-        alpha: 0.4 + Math.random() * 0.6
+        rotationSpeed: (Math.random() - 0.5) * 0.03,
+        alpha: 0.4 + Math.random() * 0.6,
+        depth: 0.3 + Math.random() * 0.7 // Random depth between 0.3 and 1
       });
     }
     
@@ -55,9 +57,9 @@ export function ThreeScene() {
       ctx.globalAlpha = alpha;
       
       // Use simplified icon paths for canvas drawing
-      ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${alpha})`;
+      ctx.strokeStyle = `hsla(${hue}, 80%, 65%, ${alpha})`;
       ctx.lineWidth = size / 10;
-      ctx.fillStyle = `hsla(${hue}, 70%, 60%, ${alpha * 0.3})`;
+      ctx.fillStyle = `hsla(${hue}, 80%, 65%, ${alpha * 0.3})`;
       
       const halfSize = size / 2;
       
@@ -83,6 +85,11 @@ export function ThreeScene() {
         ctx.moveTo(-halfSize * 0.6, halfSize * 0.5);
         ctx.arcTo(-halfSize * 0.6, halfSize, halfSize * 0.6, halfSize, halfSize * 0.6);
         ctx.arcTo(halfSize * 0.6, halfSize, halfSize * 0.6, halfSize * 0.5, halfSize * 0.6);
+        // Plus sign
+        ctx.moveTo(0, halfSize * 0.2);
+        ctx.lineTo(0, halfSize * 0.8);
+        ctx.moveTo(-halfSize * 0.3, halfSize * 0.5);
+        ctx.lineTo(halfSize * 0.3, halfSize * 0.5);
       } else if (type === 'share') {
         // Share icon
         ctx.arc(-halfSize * 0.5, -halfSize * 0.5, size / 5, 0, Math.PI * 2);
@@ -99,23 +106,43 @@ export function ThreeScene() {
       ctx.restore();
     };
     
-    // Draw number counter
+    // Draw 3D floating counter
     const drawCounter = (ctx: CanvasRenderingContext2D) => {
-      const counter = Math.floor(1000 + 8000 * (0.5 + 0.5 * Math.sin(time / 10)));
+      const counter = Math.floor(1000 + 9000 * (0.5 + 0.5 * Math.sin(time / 10)));
       
-      ctx.save();
-      ctx.font = "bold 30px 'Tajawal', sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = `hsla(${hue}, 70%, 50%, 0.9)`;
-      ctx.fillText(`+${counter.toLocaleString()}`, canvas.width / 2, canvas.height / 2);
-      
-      ctx.font = "16px 'Tajawal', sans-serif";
-      ctx.fillText("متابعين", canvas.width / 2, canvas.height / 2 + 30);
-      ctx.restore();
+      // Create 3D effect for counter with multiple layers
+      for (let i = 5; i >= 0; i--) {
+        const offset = i * 2;
+        const alpha = i === 0 ? 1 : (5 - i) / 15;
+        
+        ctx.save();
+        ctx.font = `bold ${30 + i}px 'Tajawal', sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = `hsla(${hue}, 80%, 60%, ${alpha})`;
+        ctx.shadowColor = "rgba(0, 0, 0, 0.2)";
+        ctx.shadowBlur = 15;
+        ctx.shadowOffsetX = 5 - i;
+        ctx.shadowOffsetY = 5 - i;
+        ctx.fillText(`+${counter.toLocaleString()}`, canvas.width / 2 + offset, canvas.height / 2);
+        
+        if (i === 0) {
+          ctx.font = "bold 16px 'Tajawal', sans-serif";
+          ctx.fillText("متابعين", canvas.width / 2, canvas.height / 2 + 30);
+          
+          // Draw decorative elements
+          ctx.beginPath();
+          ctx.moveTo(canvas.width / 2 - 80, canvas.height / 2 + 50);
+          ctx.lineTo(canvas.width / 2 + 80, canvas.height / 2 + 50);
+          ctx.strokeStyle = `hsla(${hue}, 70%, 60%, 0.5)`;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
     };
     
-    // Draw wave connections between particles
+    // Draw wave connections between particles - more 3D effect
     const drawConnections = (ctx: CanvasRenderingContext2D, particles: any[]) => {
       ctx.beginPath();
       for (let i = 0; i < particles.length; i++) {
@@ -124,15 +151,56 @@ export function ThreeScene() {
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < canvas.width / 5) {
+          if (distance < canvas.width / 4) {
+            const alpha = (1 - distance / (canvas.width / 4)) * 0.2 * 
+                          particles[i].depth * particles[j].depth;
+            
+            ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `hsla(${hue}, 80%, 60%, ${alpha})`;
+            ctx.lineWidth = 1 * Math.min(particles[i].depth, particles[j].depth);
+            ctx.stroke();
           }
         }
       }
-      ctx.strokeStyle = `hsla(${hue}, 60%, 50%, 0.1)`;
-      ctx.lineWidth = 1;
-      ctx.stroke();
+    };
+    
+    // Draw flowing background with 3D perspective effect
+    const draw3DFlowingBackground = (ctx: CanvasRenderingContext2D) => {
+      // Create 3D grid effect
+      const gridSize = 20;
+      const perspective = 800;
+      const gridDepth = 5;
+      
+      for (let z = 0; z < gridDepth; z++) {
+        const depth = 1 - z / gridDepth;
+        const scale = 0.5 + depth * 0.5;
+        const offset = (1 - scale) * canvas.height / 2;
+        const yOffset = Math.sin(time * 0.3) * 30 * depth;
+        const xOffset = Math.cos(time * 0.2) * 30 * depth;
+        
+        ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${depth * 0.1})`;
+        ctx.lineWidth = depth * 2;
+        
+        // Draw horizontal lines with perspective
+        for (let y = 0; y <= canvas.height / gridSize; y++) {
+          const yPos = y * gridSize * scale + offset + yOffset;
+          ctx.beginPath();
+          ctx.moveTo(0, yPos);
+          ctx.lineTo(canvas.width, yPos);
+          ctx.stroke();
+        }
+        
+        // Draw vertical lines with perspective
+        for (let x = 0; x <= canvas.width / gridSize; x++) {
+          const xPos = x * gridSize * scale + xOffset;
+          ctx.beginPath();
+          ctx.moveTo(xPos, offset + yOffset);
+          ctx.lineTo(xPos, canvas.height - offset + yOffset);
+          ctx.stroke();
+        }
+      }
     };
     
     const drawAnimation = () => {
@@ -145,56 +213,75 @@ export function ThreeScene() {
       // Update hue for color animation
       hue = 260 + Math.sin(time * 0.1) * 20; // Oscillate around purple
       
-      // Draw flowing background gradient - more subtle now
+      // Draw 3D flowing background
+      draw3DFlowingBackground(ctx);
+      
+      // Draw flowing radial gradient
       const gradient = ctx.createRadialGradient(
-        canvas.width / 2, canvas.height / 2, 0,
-        canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 1.5
+        canvas.width / 2 + Math.sin(time * 0.2) * 100, 
+        canvas.height / 2 + Math.cos(time * 0.3) * 50, 
+        0,
+        canvas.width / 2, 
+        canvas.height / 2, 
+        Math.max(canvas.width, canvas.height) * 0.8
       );
-      gradient.addColorStop(0, `hsla(${hue}, 70%, 95%, 0.02)`);
-      gradient.addColorStop(1, `hsla(${hue}, 70%, 90%, 0)`);
+      gradient.addColorStop(0, `hsla(${hue}, 70%, 95%, 0.1)`);
+      gradient.addColorStop(0.5, `hsla(${hue + 10}, 70%, 90%, 0.05)`);
+      gradient.addColorStop(1, `hsla(${hue + 20}, 70%, 85%, 0)`);
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Draw wave pattern in background
-      ctx.beginPath();
-      for (let x = 0; x < canvas.width; x += 20) {
-        const y = canvas.height / 2 + 
-                Math.sin(x / 50 + time) * 50 * Math.sin(time / 5) + 
-                Math.cos(x / 120 + time * 0.7) * 30;
+      // Draw multiple wave patterns in background for depth
+      for (let layer = 0; layer < 3; layer++) {
+        ctx.beginPath();
+        const amplitude = 30 + layer * 20;
+        const period = 50 + layer * 30;
+        const layerSpeed = 0.7 + layer * 0.3;
+        const alpha = 0.3 - layer * 0.1;
         
-        if (x === 0) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
+        for (let x = 0; x < canvas.width; x += 10) {
+          const y = canvas.height / 2 + 
+                  Math.sin(x / period + time * layerSpeed) * amplitude * Math.sin(time / 5) + 
+                  Math.cos(x / (period * 2) + time * layerSpeed * 0.7) * (amplitude / 2);
+          
+          if (x === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
         }
+        ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${alpha})`;
+        ctx.lineWidth = 3 - layer;
+        ctx.stroke();
       }
-      ctx.strokeStyle = `hsla(${hue}, 70%, 60%, 0.2)`;
-      ctx.lineWidth = 2;
-      ctx.stroke();
       
-      // Update and draw particles
+      // Update and draw particles with depth
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         
-        // Update particle positions with flowing motion
-        p.y -= p.speed * (1 + 0.2 * Math.sin(time / 10 + i));
-        p.x += Math.sin(time / 5 + i) * 0.5;
-        p.rotation += p.rotationSpeed;
+        // Update particle positions with flowing motion and respect depth
+        p.y -= p.speed * p.depth * (1 + 0.2 * Math.sin(time / 10 + i));
+        p.x += Math.sin(time / 5 + i) * 0.7 * p.depth;
+        p.rotation += p.rotationSpeed * p.depth;
+        
+        // Scale size based on depth to create perspective
+        const scaledSize = p.size * p.depth;
         
         // Reset particles that go off-screen
-        if (p.y < -p.size) {
-          p.y = canvas.height + p.size;
+        if (p.y < -scaledSize) {
+          p.y = canvas.height + scaledSize;
           p.x = Math.random() * canvas.width;
+          p.depth = 0.3 + Math.random() * 0.7;
         }
         
-        // Draw the social media icon
-        drawIcon(ctx, p.x, p.y, p.size, p.iconType, p.rotation, p.alpha);
+        // Draw the social media icon with depth effect
+        drawIcon(ctx, p.x, p.y, scaledSize, p.iconType, p.rotation, p.alpha * p.depth);
       }
       
-      // Draw connections between particles
+      // Draw connections between particles with depth effect
       drawConnections(ctx, particles);
       
-      // Draw follower counter in the center
+      // Draw follower counter in the center with 3D effect
       drawCounter(ctx);
       
       // Call the next frame
