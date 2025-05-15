@@ -104,13 +104,13 @@ export function ThreeScene() {
       const counter = Math.floor(1000 + 8000 * (0.5 + 0.5 * Math.sin(time / 10)));
       
       ctx.save();
-      ctx.font = "bold 30px 'Inter', sans-serif";
+      ctx.font = "bold 30px 'Tajawal', sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = `hsla(${hue}, 70%, 50%, 0.9)`;
       ctx.fillText(`+${counter.toLocaleString()}`, canvas.width / 2, canvas.height / 2);
       
-      ctx.font = "16px 'Inter', sans-serif";
+      ctx.font = "16px 'Tajawal', sans-serif";
       ctx.fillText("متابعين", canvas.width / 2, canvas.height / 2 + 30);
       ctx.restore();
     };
@@ -139,19 +139,18 @@ export function ThreeScene() {
       if (!ctx) return;
       time += 0.05;
       
-      // Clear canvas with translucent background for trail effect
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Clear canvas with transparent background for better effect
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Update hue for color animation
       hue = 260 + Math.sin(time * 0.1) * 20; // Oscillate around purple
       
-      // Draw flowing background gradient
+      // Draw flowing background gradient - more subtle now
       const gradient = ctx.createRadialGradient(
         canvas.width / 2, canvas.height / 2, 0,
         canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 1.5
       );
-      gradient.addColorStop(0, `hsla(${hue}, 70%, 95%, 0.05)`);
+      gradient.addColorStop(0, `hsla(${hue}, 70%, 95%, 0.02)`);
       gradient.addColorStop(1, `hsla(${hue}, 70%, 90%, 0)`);
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -219,11 +218,11 @@ export function ThreeScene() {
   }, []);
   
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full absolute inset-0 overflow-hidden">
       <canvas 
         ref={canvasRef}
-        className="w-full h-full rounded-lg"
-        style={{ background: 'rgba(255,255,255,0.05)' }}
+        className="w-full h-full absolute inset-0"
+        style={{ background: 'transparent' }}
       />
       <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-sm p-2 rounded-full flex gap-2">
         <Instagram className="h-5 w-5 text-primary" />

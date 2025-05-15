@@ -12,68 +12,69 @@ const Index = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col" dir="rtl">
       <Navbar />
       
       {/* Hero Section */}
-      <WaveBackground className="pt-24 md:pt-32 pb-20">
-        <section className="container">
+      <section className="relative pt-24 md:pt-32 pb-20 overflow-hidden">
+        <div className="absolute inset-0">
+          <ThreeScene />
+        </div>
+        <div className="container relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 backdrop-blur-sm bg-white/5 p-8 rounded-2xl">
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-                Grow your social media presence with <span className="text-foreground">follow<span className="text-primary">flare</span></span>
+                نمّي حضورك على وسائل التواصل الإجتماعي مع <span className="text-foreground">فولو<span className="text-primary">فلير</span></span>
               </h1>
               <p className="text-xl text-muted-foreground">
-                Boost your followers, engagement, and visibility with our powerful growth solutions.
+                عزز متابعيك، والتفاعل، والظهور مع حلولنا القوية للنمو.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" asChild className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-                  <a href="https://app.followflare.net">Get Started</a>
+                <Button size="lg" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+                  <a href="https://app.followflare.net">ابدأ الآن</a>
                 </Button>
                 <Button size="lg" variant="outline" asChild className="border-primary/30 hover:bg-primary/10">
-                  <a href="#services">Learn More</a>
+                  <a href="#services">اعرف المزيد</a>
                 </Button>
               </div>
             </div>
-            <div className="h-[400px] md:h-[500px] relative overflow-hidden rounded-lg glass-card">
-              <ThreeScene />
-            </div>
+            <div></div>
           </div>
-        </section>
-      </WaveBackground>
+        </div>
+      </section>
 
       {/* Services Section */}
       <section id="services" className="py-20">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">خدماتنا</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              We provide comprehensive solutions to help you grow your social media presence
+              نقدم حلولاً شاملة لمساعدتك على تنمية وجودك على وسائل التواصل الاجتماعي
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <ServiceCard 
-              title="Follower Growth"
-              description="Increase your follower count with our targeted growth strategies and tools."
+              title="زيادة المتابعين"
+              description="زد عدد متابعيك باستخدام استراتيجيات وأدوات النمو المستهدفة."
               icon={<UserPlus className="h-6 w-6 text-primary" />}
               className="animate-float"
             />
             <ServiceCard 
-              title="Engagement Boost"
-              description="Get more likes, comments and shares with our engagement optimization."
+              title="تعزيز التفاعل"
+              description="احصل على المزيد من الإعجابات والتعليقات والمشاركات من خلال تحسين التفاعل."
               icon={<TrendingUp className="h-6 w-6 text-primary" />}
               className="animate-float delay-200"
             />
             <ServiceCard 
-              title="Content Strategy"
-              description="Develop effective content strategies that resonate with your audience."
+              title="استراتيجية المحتوى"
+              description="طور استراتيجيات محتوى فعالة تتناسب مع جمهورك المستهدف."
               icon={<Square className="h-6 w-6 text-primary" />}
               className="animate-float delay-400"
             />
             <ServiceCard 
-              title="Analytics & Insights"
-              description="Access detailed analytics to understand your growth and audience behavior."
+              title="التحليلات والرؤى"
+              description="استفد من تحليلات مفصلة لفهم النمو وسلوك الجمهور."
               icon={<Box className="h-6 w-6 text-primary" />}
               className="animate-float delay-600"
             />
@@ -81,13 +82,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Platform Section - NEW */}
+      {/* Platform Section */}
       <section className="py-16 bg-primary/5">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Supported Platforms</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">المنصات المدعومة</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Grow your audience across all major social media networks
+              نمِّ جمهورك عبر جميع شبكات التواصل الاجتماعي الرئيسية
             </p>
           </div>
           
@@ -96,7 +97,7 @@ const Index = () => {
               <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-white mb-3 group-hover:scale-110 transition-transform">
                 <Instagram size={40} />
               </div>
-              <p className="font-medium">Instagram</p>
+              <p className="font-medium">انستجرام</p>
             </div>
             
             <div className="group flex flex-col items-center opacity-60">
@@ -108,21 +109,21 @@ const Index = () => {
                   </p>
                 </div>
               </div>
-              <p className="font-medium">Coming Soon</p>
+              <p className="font-medium">قريباً</p>
             </div>
             
             <div className="group flex flex-col items-center opacity-60">
               <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/50 to-red-500/50 text-white mb-3 group-hover:scale-110 transition-transform">
                 <Box size={32} />
               </div>
-              <p className="font-medium">Coming Soon</p>
+              <p className="font-medium">قريباً</p>
             </div>
             
             <div className="group flex flex-col items-center opacity-60">
               <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/50 to-green-500/50 text-white mb-3 group-hover:scale-110 transition-transform">
                 <Box size={32} />
               </div>
-              <p className="font-medium">Coming Soon</p>
+              <p className="font-medium">قريباً</p>
             </div>
           </div>
         </div>
@@ -132,60 +133,60 @@ const Index = () => {
       <WaveBackground className="py-20 bg-secondary/50">
         <section id="features" className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Features</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">الميزات الرئيسية</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Powerful tools designed to maximize your social media potential
+              أدوات قوية مصممة لتعظيم إمكاناتك على وسائل التواصل الاجتماعي
             </p>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="glass-card p-8 rounded-xl flex flex-col gap-4 backdrop-blur-md bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/10">
-              <h3 className="text-2xl font-bold">Advanced Targeting</h3>
+              <h3 className="text-2xl font-bold">استهداف متقدم</h3>
               <p className="text-muted-foreground">
-                Our AI-powered targeting system finds the perfect audience for your content, 
-                ensuring that you connect with users who are genuinely interested in what you share.
+                يبحث نظام الاستهداف المدعوم بالذكاء الاصطناعي لدينا عن الجمهور المثالي لمحتواك،
+                مما يضمن أنك تتواصل مع المستخدمين المهتمين حقًا بما تشاركه.
               </p>
               <ul className="mt-4 space-y-2">
                 <li className="flex items-center gap-2">
                   <Circle className="h-4 w-4 text-primary" />
-                  <span>Interest-based audience targeting</span>
+                  <span>استهداف الجمهور على أساس الاهتمامات</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Circle className="h-4 w-4 text-primary" />
-                  <span>Demographic filtering</span>
+                  <span>تصفية ديموغرافية</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Circle className="h-4 w-4 text-primary" />
-                  <span>Competitor audience analysis</span>
+                  <span>تحليل جمهور المنافسين</span>
                 </li>
               </ul>
             </div>
             <div className="glass-card p-8 rounded-xl flex flex-col gap-4 backdrop-blur-md bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/10">
-              <h3 className="text-2xl font-bold">Growth Analytics</h3>
+              <h3 className="text-2xl font-bold">تحليلات النمو</h3>
               <p className="text-muted-foreground">
-                Track your progress with comprehensive analytics that provide insights into your
-                growth patterns, engagement metrics, and audience behavior.
+                تتبع تقدمك من خلال تحليلات شاملة توفر رؤى حول أنماط النمو الخاصة بك
+                ومقاييس المشاركة وسلوك الجمهور.
               </p>
               <ul className="mt-4 space-y-2">
                 <li className="flex items-center gap-2">
                   <Circle className="h-4 w-4 text-primary" />
-                  <span>Real-time growth tracking</span>
+                  <span>تتبع النمو في الوقت الحقيقي</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Circle className="h-4 w-4 text-primary" />
-                  <span>Engagement rate analysis</span>
+                  <span>تحليل معدل المشاركة</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Circle className="h-4 w-4 text-primary" />
-                  <span>Performance comparison</span>
+                  <span>مقارنة الأداء</span>
                 </li>
               </ul>
             </div>
           </div>
           
           <div className="mt-12 text-center">
-            <Button size="lg" asChild className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-              <a href="https://app.followflare.net">Start Growing Today</a>
+            <Button size="lg" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+              <a href="https://app.followflare.net">ابدأ النمو اليوم</a>
             </Button>
           </div>
         </section>
@@ -195,36 +196,33 @@ const Index = () => {
       <section id="testimonials" className="py-20">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Clients Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">ماذا يقول عملاؤنا</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Success stories from people who've transformed their social media presence
+              قصص نجاح من أشخاص غيروا وجودهم على وسائل التواصل الاجتماعي
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="glass-card p-6 rounded-xl backdrop-blur-md bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/10">
               <p className="italic mb-4">
-                "Since using followflare, my Instagram followers have increased by 300% in just two months. 
-                The targeting tools are incredibly effective!"
+                "منذ استخدام فولوفلير، زاد عدد متابعي على انستغرام بنسبة 300% في شهرين فقط. أدوات الاستهداف فعالة بشكل لا يصدق!"
               </p>
-              <p className="font-bold">Ahmed M.</p>
-              <p className="text-sm text-muted-foreground">Lifestyle Influencer</p>
+              <p className="font-bold">أحمد م.</p>
+              <p className="text-sm text-muted-foreground">مؤثر في مجال نمط الحياة</p>
             </div>
             <div className="glass-card p-6 rounded-xl backdrop-blur-md bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/10">
               <p className="italic mb-4">
-                "The analytics provided by followflare have helped me understand my audience better 
-                and create content that truly resonates with them."
+                "التحليلات التي يوفرها فولوفلير ساعدتني على فهم جمهوري بشكل أفضل وإنشاء محتوى يتفاعل معهم حقًا."
               </p>
-              <p className="font-bold">Sarah K.</p>
-              <p className="text-sm text-muted-foreground">Business Owner</p>
+              <p className="font-bold">سارة ك.</p>
+              <p className="text-sm text-muted-foreground">صاحبة أعمال</p>
             </div>
             <div className="glass-card p-6 rounded-xl backdrop-blur-md bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/10">
               <p className="italic mb-4">
-                "I've tried many growth tools, but followflare stands out with its 
-                personalized strategies and consistent results."
+                "لقد جربت العديد من أدوات النمو، لكن فولوفلير يبرز بفضل استراتيجياته المخصصة ونتائجه المتسقة."
               </p>
-              <p className="font-bold">Mohammed A.</p>
-              <p className="text-sm text-muted-foreground">Content Creator</p>
+              <p className="font-bold">محمد أ.</p>
+              <p className="text-sm text-muted-foreground">منشئ محتوى</p>
             </div>
           </div>
         </div>
@@ -234,13 +232,13 @@ const Index = () => {
       <WaveBackground className="py-20 bg-primary/5">
         <section className="container">
           <div className="glass-card p-10 rounded-2xl text-center backdrop-blur-md bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Boost Your Social Media Presence?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">هل أنت جاهز لتعزيز وجودك على وسائل التواصل الاجتماعي؟</h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Join thousands of content creators and businesses who've transformed their social media
-              with our powerful growth tools.
+              انضم إلى آلاف منشئي المحتوى والشركات الذين حولوا وجودهم على وسائل التواصل الاجتماعي
+              باستخدام أدوات النمو القوية لدينا.
             </p>
-            <Button size="lg" asChild className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-              <a href="https://app.followflare.net">Get Started Now</a>
+            <Button size="lg" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
+              <a href="https://app.followflare.net">ابدأ الآن</a>
             </Button>
           </div>
         </section>
@@ -251,55 +249,55 @@ const Index = () => {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="font-bold text-lg mb-4">follow<span className="text-primary">flare</span></h3>
+              <h3 className="font-bold text-lg mb-4">فولو<span className="text-primary">فلير</span></h3>
               <p className="text-muted-foreground">
-                Empowering your social media growth with advanced tools and strategies.
+                تمكين نمو وسائل التواصل الاجتماعي الخاصة بك من خلال أدوات واستراتيجيات متقدمة.
               </p>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Services</h4>
+              <h4 className="font-bold mb-4">الخدمات</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Follower Growth</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Engagement Boost</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Content Strategy</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Analytics</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">زيادة المتابعين</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">تعزيز التفاعل</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">استراتيجية المحتوى</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">التحليلات</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Company</h4>
+              <h4 className="font-bold mb-4">الشركة</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">About Us</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Contact</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Careers</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Blog</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">من نحن</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">اتصل بنا</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">الوظائف</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">المدونة</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Legal</h4>
+              <h4 className="font-bold mb-4">القانونية</h4>
               <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Terms of Service</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Privacy Policy</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Refund Policy</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground">Cookie Policy</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">شروط الخدمة</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">سياسة الخصوصية</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">سياسة الاسترداد</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-foreground">سياسة ملفات تعريف الارتباط</a></li>
               </ul>
             </div>
           </div>
           <Separator className="my-8" />
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} follow<span className="text-primary">flare</span>. All rights reserved.
+              © {new Date().getFullYear()} فولو<span className="text-primary">فلير</span>. جميع الحقوق محفوظة.
             </p>
             <div className="flex gap-4">
               <a href="#" className="text-muted-foreground hover:text-foreground">
-                <span className="sr-only">Instagram</span>
+                <span className="sr-only">انستجرام</span>
                 <Instagram className="h-5 w-5" />
               </a>
               <a href="#" className="text-muted-foreground hover:text-foreground">
-                <span className="sr-only">Share</span>
+                <span className="sr-only">مشاركة</span>
                 <Share className="h-5 w-5" />
               </a>
               <a href="#" className="text-muted-foreground hover:text-foreground">
-                <span className="sr-only">Growth</span>
+                <span className="sr-only">نمو</span>
                 <TrendingUp className="h-5 w-5" />
               </a>
             </div>

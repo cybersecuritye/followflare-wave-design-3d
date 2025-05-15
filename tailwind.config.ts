@@ -99,7 +99,7 @@ export default {
         'wave': 'wave 15s ease-in-out infinite'
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif']
+        sans: ['Tajawal', 'Inter', 'sans-serif']
       }
     }
   },
