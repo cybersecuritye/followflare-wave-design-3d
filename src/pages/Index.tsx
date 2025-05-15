@@ -1,3 +1,4 @@
+
 import { Navbar } from "@/components/Navbar";
 import { ThreeScene } from "@/components/ThreeScene";
 import { WaveBackground } from "@/components/WaveBackground";
@@ -57,25 +58,25 @@ const Index = () => {
               description="Increase your follower count with our targeted growth strategies and tools."
               icon={<User className="h-6 w-6" />}
               className="animate-float"
-              />
+            />
             <ServiceCard 
               title="Engagement Boost"
               description="Get more likes, comments and shares with our engagement optimization."
               icon={<Circle className="h-6 w-6" />}
               className="animate-float delay-200"
-              />
+            />
             <ServiceCard 
               title="Content Strategy"
               description="Develop effective content strategies that resonate with your audience."
               icon={<Square className="h-6 w-6" />}
               className="animate-float delay-400"
-              />
+            />
             <ServiceCard 
               title="Analytics & Insights"
               description="Access detailed analytics to understand your growth and audience behavior."
               icon={<Box className="h-6 w-6" />}
               className="animate-float delay-600"
-              />
+            />
           </div>
         </div>
       </section>
