@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from 'react';
+import { Instagram, TrendingUp, UserPlus, Share } from 'lucide-react';
 
 export function ThreeScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -16,65 +17,188 @@ export function ThreeScene() {
     canvas.height = canvas.offsetHeight;
     
     let animationFrameId: number;
-    let hue = 0;
+    let hue = 260; // Purple hue
+    let time = 0;
+    
+    // Create particles for social media icons
+    const iconTypes = ['instagram', 'trending', 'userplus', 'share'];
+    const particles: {
+      x: number;
+      y: number;
+      size: number;
+      speed: number;
+      iconType: string;
+      rotation: number;
+      rotationSpeed: number;
+      alpha: number;
+    }[] = [];
+    
+    // Generate random particles
+    for (let i = 0; i < 15; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: 15 + Math.random() * 25,
+        speed: 0.5 + Math.random() * 1,
+        iconType: iconTypes[Math.floor(Math.random() * iconTypes.length)],
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.02,
+        alpha: 0.4 + Math.random() * 0.6
+      });
+    }
+    
+    // Draw social media icon based on type
+    const drawIcon = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number, type: string, rotation: number, alpha: number) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      ctx.globalAlpha = alpha;
+      
+      // Use simplified icon paths for canvas drawing
+      ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${alpha})`;
+      ctx.lineWidth = size / 10;
+      ctx.fillStyle = `hsla(${hue}, 70%, 60%, ${alpha * 0.3})`;
+      
+      const halfSize = size / 2;
+      
+      ctx.beginPath();
+      
+      if (type === 'instagram') {
+        // Instagram-like icon
+        ctx.rect(-halfSize, -halfSize, size, size);
+        ctx.arc(0, 0, halfSize * 0.6, 0, Math.PI * 2);
+        ctx.moveTo(halfSize * 0.7, -halfSize * 0.7);
+        ctx.arc(halfSize * 0.7, -halfSize * 0.7, size / 10, 0, Math.PI * 2);
+      } else if (type === 'trending') {
+        // Trending icon
+        ctx.moveTo(-halfSize, halfSize);
+        ctx.lineTo(0, 0);
+        ctx.lineTo(halfSize, -halfSize);
+        ctx.moveTo(halfSize * 0.3, -halfSize * 0.3);
+        ctx.lineTo(halfSize, -halfSize);
+        ctx.lineTo(halfSize, -halfSize * 0.3);
+      } else if (type === 'userplus') {
+        // User plus icon
+        ctx.arc(0, -halfSize * 0.3, halfSize * 0.4, 0, Math.PI * 2);
+        ctx.moveTo(-halfSize * 0.6, halfSize * 0.5);
+        ctx.arcTo(-halfSize * 0.6, halfSize, halfSize * 0.6, halfSize, halfSize * 0.6);
+        ctx.arcTo(halfSize * 0.6, halfSize, halfSize * 0.6, halfSize * 0.5, halfSize * 0.6);
+      } else if (type === 'share') {
+        // Share icon
+        ctx.arc(-halfSize * 0.5, -halfSize * 0.5, size / 5, 0, Math.PI * 2);
+        ctx.arc(halfSize * 0.5, 0, size / 5, 0, Math.PI * 2);
+        ctx.arc(-halfSize * 0.5, halfSize * 0.5, size / 5, 0, Math.PI * 2);
+        ctx.moveTo(-halfSize * 0.5, -halfSize * 0.5);
+        ctx.lineTo(halfSize * 0.5, 0);
+        ctx.moveTo(-halfSize * 0.5, halfSize * 0.5);
+        ctx.lineTo(halfSize * 0.5, 0);
+      }
+      
+      ctx.stroke();
+      ctx.fill();
+      ctx.restore();
+    };
+    
+    // Draw number counter
+    const drawCounter = (ctx: CanvasRenderingContext2D) => {
+      const counter = Math.floor(1000 + 8000 * (0.5 + 0.5 * Math.sin(time / 10)));
+      
+      ctx.save();
+      ctx.font = "bold 30px 'Inter', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = `hsla(${hue}, 70%, 50%, 0.9)`;
+      ctx.fillText(`+${counter.toLocaleString()}`, canvas.width / 2, canvas.height / 2);
+      
+      ctx.font = "16px 'Inter', sans-serif";
+      ctx.fillText("متابعين", canvas.width / 2, canvas.height / 2 + 30);
+      ctx.restore();
+    };
+    
+    // Draw wave connections between particles
+    const drawConnections = (ctx: CanvasRenderingContext2D, particles: any[]) => {
+      ctx.beginPath();
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < canvas.width / 5) {
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+          }
+        }
+      }
+      ctx.strokeStyle = `hsla(${hue}, 60%, 50%, 0.1)`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    };
     
     const drawAnimation = () => {
       if (!ctx) return;
+      time += 0.05;
       
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Clear canvas with translucent background for trail effect
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
       // Update hue for color animation
-      hue = (hue + 0.5) % 360;
+      hue = 260 + Math.sin(time * 0.1) * 20; // Oscillate around purple
       
-      // Draw an animated gradient shape
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const radius = Math.min(centerX, centerY) * 0.7;
-      
-      // Draw outer circle
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      // Draw flowing background gradient
       const gradient = ctx.createRadialGradient(
-        centerX, centerY, radius * 0.3,
-        centerX, centerY, radius
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 1.5
       );
-      gradient.addColorStop(0, `hsla(${hue}, 70%, 60%, 0.8)`);
-      gradient.addColorStop(1, `hsla(${hue + 60}, 70%, 50%, 0.4)`);
+      gradient.addColorStop(0, `hsla(${hue}, 70%, 95%, 0.05)`);
+      gradient.addColorStop(1, `hsla(${hue}, 70%, 90%, 0)`);
       ctx.fillStyle = gradient;
-      ctx.fill();
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Draw wave patterns
+      // Draw wave pattern in background
       ctx.beginPath();
-      const waveCount = 8;
-      for (let i = 0; i <= waveCount; i++) {
-        const t = i / waveCount;
-        const x = canvas.width * t;
-        const y = centerY + Math.sin(t * Math.PI * 4 + performance.now() / 1000) * radius * 0.3;
-        if (i === 0) {
+      for (let x = 0; x < canvas.width; x += 20) {
+        const y = canvas.height / 2 + 
+                Math.sin(x / 50 + time) * 50 * Math.sin(time / 5) + 
+                Math.cos(x / 120 + time * 0.7) * 30;
+        
+        if (x === 0) {
           ctx.moveTo(x, y);
         } else {
           ctx.lineTo(x, y);
         }
       }
-      ctx.strokeStyle = `hsla(${hue + 120}, 70%, 60%, 0.6)`;
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = `hsla(${hue}, 70%, 60%, 0.2)`;
+      ctx.lineWidth = 2;
       ctx.stroke();
       
-      // Draw floating particles
-      for (let i = 0; i < 12; i++) {
-        const time = performance.now() / 1000;
-        const t = (time * 0.2 + i) % 6;
-        const size = 10 + Math.sin(time * 0.5 + i) * 5;
-        const x = centerX + Math.cos(t) * radius * 0.6;
-        const y = centerY + Math.sin(t) * radius * 0.6;
+      // Update and draw particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
         
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${(hue + i * 30) % 360}, 80%, 60%, 0.8)`;
-        ctx.fill();
+        // Update particle positions with flowing motion
+        p.y -= p.speed * (1 + 0.2 * Math.sin(time / 10 + i));
+        p.x += Math.sin(time / 5 + i) * 0.5;
+        p.rotation += p.rotationSpeed;
+        
+        // Reset particles that go off-screen
+        if (p.y < -p.size) {
+          p.y = canvas.height + p.size;
+          p.x = Math.random() * canvas.width;
+        }
+        
+        // Draw the social media icon
+        drawIcon(ctx, p.x, p.y, p.size, p.iconType, p.rotation, p.alpha);
       }
       
+      // Draw connections between particles
+      drawConnections(ctx, particles);
+      
+      // Draw follower counter in the center
+      drawCounter(ctx);
+      
+      // Call the next frame
       animationFrameId = requestAnimationFrame(drawAnimation);
     };
     
@@ -99,8 +223,14 @@ export function ThreeScene() {
       <canvas 
         ref={canvasRef}
         className="w-full h-full rounded-lg"
-        style={{ background: 'rgba(0,0,0,0.05)' }}
+        style={{ background: 'rgba(255,255,255,0.05)' }}
       />
+      <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-sm p-2 rounded-full flex gap-2">
+        <Instagram className="h-5 w-5 text-primary" />
+        <TrendingUp className="h-5 w-5 text-primary" />
+        <UserPlus className="h-5 w-5 text-primary" />
+        <Share className="h-5 w-5 text-primary" />
+      </div>
     </div>
   );
 }
