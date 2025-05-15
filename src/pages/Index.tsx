@@ -1,4 +1,3 @@
-
 import { Navbar } from "@/components/Navbar";
 import { ThreeScene } from "@/components/ThreeScene";
 import { WaveBackground } from "@/components/WaveBackground";
@@ -6,7 +5,7 @@ import { ServiceCard } from "@/components/ServiceCard";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/ThemeProvider";
-import { Circle, Square, User, Cube } from "lucide-react";
+import { Circle, Square, User, Box } from "lucide-react";
 
 const Index = () => {
   const { theme } = useTheme();
@@ -63,23 +62,20 @@ const Index = () => {
               title="Engagement Boost"
               description="Get more likes, comments and shares with our engagement optimization."
               icon={<Circle className="h-6 w-6" />}
-              className="animate-float" 
-              style={{ animationDelay: '0.2s' }}
-            />
+              className="animate-float delay-200"
+              />
             <ServiceCard 
               title="Content Strategy"
               description="Develop effective content strategies that resonate with your audience."
               icon={<Square className="h-6 w-6" />}
-              className="animate-float" 
-              style={{ animationDelay: '0.4s' }}
-            />
+              className="animate-float delay-400"
+              />
             <ServiceCard 
               title="Analytics & Insights"
               description="Access detailed analytics to understand your growth and audience behavior."
-              icon={<Cube className="h-6 w-6" />}
-              className="animate-float" 
-              style={{ animationDelay: '0.6s' }}
-            />
+              icon={<Box className="h-6 w-6" />}
+              className="animate-float delay-600"
+              />
           </div>
         </div>
       </section>
