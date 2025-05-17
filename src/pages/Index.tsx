@@ -1,4 +1,3 @@
-
 import { Navbar } from "@/components/Navbar";
 import { ThreeScene } from "@/components/ThreeScene";
 import { WaveBackground } from "@/components/WaveBackground";
@@ -6,11 +5,12 @@ import { ServiceCard } from "@/components/ServiceCard";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/ThemeProvider";
-import { Circle, Square, User, Box, Instagram, TrendingUp, UserPlus, Share } from "lucide-react";
+import { Circle, Square, User, Box, Instagram, TrendingUp, UserPlus, Share, Facebook, Twitter, Linkedin, MessageSquare } from "lucide-react";
 import { Button3D } from "@/components/Button3D";
 import { GlassCard } from "@/components/GlassCard";
 import { PlatformIcon3D } from "@/components/PlatformIcon3D";
 import { TestimonialCard } from "@/components/TestimonialCard";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 const Index = () => {
   const { theme } = useTheme();
@@ -214,7 +214,7 @@ const Index = () => {
               role="صاحبة أعمال"
             />
             <TestimonialCard
-              quote="لقد جربت العديد من أدوات النمو، لكن فولوفلير يبرز بفضل استراتيجياته المخصصة ونتائجه المتسقة."
+              quote="لقد جربت العديد من أدوات النمو، لكن فولوفلير يبرز بفضل استراتيجياته المخصصة وältائجه المتسقة."
               author="محمد أ."
               role="منشئ محتوى"
             />
@@ -243,66 +243,7 @@ const Index = () => {
       </WaveBackground>
 
       {/* Footer */}
-      <footer className="py-12 relative overflow-hidden border-t border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
-        <div className="container relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="font-bold text-lg mb-4">فولو<span className="text-primary">فلير</span></h3>
-              <p className="text-muted-foreground">
-                تمكين نمو وسائل التواصل الاجتماعي الخاصة بك من خلال أدوات واستراتيجيات متقدمة.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold mb-4 gradient-text">الخدمات</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">زيادة المتابعين</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">تعزيز التفاعل</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">استراتيجية المحتوى</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">التحليلات</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-4 gradient-text">الشركة</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">من نحن</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">اتصل بنا</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">الوظائف</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">المدونة</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-4 gradient-text">القانونية</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">شروط الخدمة</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">سياسة الخصوصية</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">سياسة الاسترداد</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-foreground transition-colors">سياسة ملفات تعريف الارتباط</a></li>
-              </ul>
-            </div>
-          </div>
-          <Separator className="my-8 opacity-30" />
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} فولو<span className="text-primary">فلير</span>. جميع الحقوق محفوظة.
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <span className="sr-only">انستجرام</span>
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <span className="sr-only">مشاركة</span>
-                <Share className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <span className="sr-only">نمو</span>
-                <TrendingUp className="h-5 w-5" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <EnhancedFooter />
     </div>
   );
 };

@@ -3,40 +3,55 @@ import { useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
+import { Menu, Home, Info, Phone, Settings, Zap } from "lucide-react";
 import { GlassCard } from "./GlassCard";
+import { Link, useLocation } from "react-router-dom";
 
 const navItems = [
-  { label: "الرئيسية", href: "#" },
-  { label: "الخدمات", href: "#services" },
-  { label: "المميزات", href: "#features" },
-  { label: "آراء العملاء", href: "#testimonials" },
-  { label: "اتصل بنا", href: "#contact" },
+  { label: "الرئيسية", href: "/", icon: Home },
+  { label: "الخدمات", href: "/services", icon: Zap },
+  { label: "من نحن", href: "/about", icon: Info },
+  { label: "اتصل بنا", href: "/contact", icon: Phone },
 ];
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  
+  // Check if a navItem is active
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return location.pathname === "/";
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/60 border-b border-white/10 shadow-sm">
       <div className="container flex items-center justify-between py-3">
-        <a href="#" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <span className="font-bold text-2xl">
             فولو<span className="text-primary">فلير</span>
           </span>
-        </a>
+        </Link>
 
         {/* Desktop navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <ul className="flex items-center gap-6">
             {navItems.map((item) => (
               <li key={item.label}>
-                <a
-                  href={item.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+                <Link
+                  to={item.href}
+                  className={cn(
+                    "flex items-center gap-2 transition-colors relative after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300",
+                    isActive(item.href) 
+                      ? "text-foreground after:scale-x-100" 
+                      : "text-muted-foreground hover:text-foreground after:scale-x-0 hover:after:scale-x-100 after:origin-bottom-left"
+                  )}
                 >
-                  {item.label}
-                </a>
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </Link>
               </li>
             ))}
           </ul>
@@ -78,13 +93,19 @@ export function Navbar() {
             <ul className="flex flex-col gap-4">
               {navItems.map((item) => (
                 <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="block text-muted-foreground hover:text-foreground transition-colors"
+                  <Link
+                    to={item.href}
+                    className={cn(
+                      "flex items-center gap-2 p-2 rounded-lg transition-colors",
+                      isActive(item.href)
+                        ? "bg-white/10 text-foreground"
+                        : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
+                    )}
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    {item.label}
-                  </a>
+                    <item.icon className="h-4 w-4" />
+                    <span>{item.label}</span>
+                  </Link>
                 </li>
               ))}
               <li>
