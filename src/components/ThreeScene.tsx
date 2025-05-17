@@ -106,11 +106,11 @@ export function ThreeScene() {
       ctx.restore();
     };
     
-    // Draw 3D floating counter
+    // Draw 3D floating counter - moved to left side
     const drawCounter = (ctx: CanvasRenderingContext2D) => {
       const counter = Math.floor(1000 + 9000 * (0.5 + 0.5 * Math.sin(time / 10)));
       
-      // Create 3D effect for counter with multiple layers
+      // Create 3D effect for counter with multiple layers - positioned on the left side
       for (let i = 5; i >= 0; i--) {
         const offset = i * 2;
         const alpha = i === 0 ? 1 : (5 - i) / 15;
@@ -124,16 +124,18 @@ export function ThreeScene() {
         ctx.shadowBlur = 15;
         ctx.shadowOffsetX = 5 - i;
         ctx.shadowOffsetY = 5 - i;
-        ctx.fillText(`+${counter.toLocaleString()}`, canvas.width / 2 + offset, canvas.height / 2);
+        
+        // Position counter on the left
+        ctx.fillText(`+${counter.toLocaleString()}`, canvas.width * 0.25 + offset, canvas.height / 2);
         
         if (i === 0) {
           ctx.font = "bold 16px 'Tajawal', sans-serif";
-          ctx.fillText("متابعين", canvas.width / 2, canvas.height / 2 + 30);
+          ctx.fillText("متابعين", canvas.width * 0.25, canvas.height / 2 + 30);
           
           // Draw decorative elements
           ctx.beginPath();
-          ctx.moveTo(canvas.width / 2 - 80, canvas.height / 2 + 50);
-          ctx.lineTo(canvas.width / 2 + 80, canvas.height / 2 + 50);
+          ctx.moveTo(canvas.width * 0.25 - 80, canvas.height / 2 + 50);
+          ctx.lineTo(canvas.width * 0.25 + 80, canvas.height / 2 + 50);
           ctx.strokeStyle = `hsla(${hue}, 70%, 60%, 0.5)`;
           ctx.lineWidth = 2;
           ctx.stroke();
@@ -166,43 +168,6 @@ export function ThreeScene() {
       }
     };
     
-    // Draw flowing background with 3D perspective effect
-    const draw3DFlowingBackground = (ctx: CanvasRenderingContext2D) => {
-      // Create 3D grid effect
-      const gridSize = 20;
-      const perspective = 800;
-      const gridDepth = 5;
-      
-      for (let z = 0; z < gridDepth; z++) {
-        const depth = 1 - z / gridDepth;
-        const scale = 0.5 + depth * 0.5;
-        const offset = (1 - scale) * canvas.height / 2;
-        const yOffset = Math.sin(time * 0.3) * 30 * depth;
-        const xOffset = Math.cos(time * 0.2) * 30 * depth;
-        
-        ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${depth * 0.1})`;
-        ctx.lineWidth = depth * 2;
-        
-        // Draw horizontal lines with perspective
-        for (let y = 0; y <= canvas.height / gridSize; y++) {
-          const yPos = y * gridSize * scale + offset + yOffset;
-          ctx.beginPath();
-          ctx.moveTo(0, yPos);
-          ctx.lineTo(canvas.width, yPos);
-          ctx.stroke();
-        }
-        
-        // Draw vertical lines with perspective
-        for (let x = 0; x <= canvas.width / gridSize; x++) {
-          const xPos = x * gridSize * scale + xOffset;
-          ctx.beginPath();
-          ctx.moveTo(xPos, offset + yOffset);
-          ctx.lineTo(xPos, canvas.height - offset + yOffset);
-          ctx.stroke();
-        }
-      }
-    };
-    
     const drawAnimation = () => {
       if (!ctx) return;
       time += 0.05;
@@ -212,9 +177,6 @@ export function ThreeScene() {
       
       // Update hue for color animation
       hue = 260 + Math.sin(time * 0.1) * 20; // Oscillate around purple
-      
-      // Draw 3D flowing background
-      draw3DFlowingBackground(ctx);
       
       // Draw flowing radial gradient
       const gradient = ctx.createRadialGradient(
@@ -311,7 +273,7 @@ export function ThreeScene() {
         className="w-full h-full absolute inset-0"
         style={{ background: 'transparent' }}
       />
-      <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-sm p-2 rounded-full flex gap-2">
+      <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-xl p-2 rounded-full flex gap-2 border border-white/20 shadow-lg">
         <Instagram className="h-5 w-5 text-primary" />
         <TrendingUp className="h-5 w-5 text-primary" />
         <UserPlus className="h-5 w-5 text-primary" />
